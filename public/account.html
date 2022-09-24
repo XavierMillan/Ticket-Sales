@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="account.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .color{
+      color: #000000;
+    }
+  </style>
+
+
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<body >
+
+<div class="site-mobile-menu" id="mobile">
+  <div class="site-mobile-menu-header">
+    <div class="site-mobile-menu-close mt-3">
+      <span class="icon-close2 js-menu-toggle"></span>
+    </div>
+  </div>
+  <div class="site-mobile-menu-body" id="mobile-nav">
+
+  </div>
+</div>
+
+<header class="site-navbar" id="navbar" role="banner">
+
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-11 col-xl-2">
+        <h1 class="mb-0 site-logo"><a href="index.html" class="color">Brand</a></h1>
+      </div>
+      <div class="col-12 col-md-10 d-none d-xl-block">
+        <nav class="site-navigation position-relative text-right" role="navigation">
+
+          <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+            <li class="active"><a href="index.html"><span class="color">Home</span></a></li>
+            <li><a href="about.html"><span class="color">About</span></a></li>
+            <!--                <li><a href="store.html"><span>Store</span></a></li>-->
+            <!--                <li><a href="tickets.html"><span>Tickets</span></a></li>-->
+            <!--                <li><a href="scanner.html"><span>Scanner</span></a></li>-->
+            <li id="login">
+              <a href="login.html"><span class="color">Login</span></a>
+            </li>
+
+
+          </ul>
+        </nav>
+      </div>
+
+
+      <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+    </div>
+
+  </div>
+  </div>
+
+</header>
+
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/main.js"></script>
+
+
+<div class="container-fluid ps-md-0">
+  <div class="row g-0">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    <div class="col-md-8 col-lg-6">
+      <div class="login d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto">
+              <h3 class="login-heading mb-4" id="message">Account Settings</h3>
+<!--              <h3 id="message"></h3>-->
+
+              <h3 id="user"></h3>
+              <br>
+              <!-- Sign In Form -->
+              <form>
+
+                <div class="form-floating mb-3"  id="namediv">
+                  <input type="text" class="form-control" id="name" minlength="2" placeholder="name" required>
+                  <label for="name" id="namelabel">Full Name</label>
+                </div>
+
+                <div class="form-floating mb-3" id="emaildiv">
+                  <input type="number" class="form-control" id="idnum" minlength="8" placeholder="name@example.com" required>
+                  <label for="idnum" id="idLabel">ID Number</label>
+                </div>
+
+                <input class="w-100 btn btn-lg btn-primary" type="submit" id="submit" value="Save Changes" disabled></input>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase-auth.js"></script>
+
+
+
+
+<script>
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  const config = {
+    apiKey: "AIzaSyBQbyfhDHOqNNKTVGjYuGJs3lBykdp9SKM",
+    authDomain: "stripe-bb257.firebaseapp.com",
+    projectId: "stripe-bb257",
+    storageBucket: "stripe-bb257.appspot.com",
+    messagingSenderId: "806611367820",
+    appId: "1:806611367820:web:e554f48f3a6c9c655b08a9",
+    measurementId: "G-WXK2DY6LRL"
+  };
+
+  firebase.initializeApp(config);
+
+  //print current user name
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+
+          function addInputListenter(idnum){
+            //when user types in name input
+            document.getElementById("name").addEventListener("input", function(){
+              if(document.getElementById("name").value !== user.displayName) {
+                document.getElementById("submit").disabled = false;
+              }
+              else if(document.getElementById("name").value == user.displayName && document.getElementById("idnum").value == idnum){
+                document.getElementById("submit").disabled = true;
+              }
+            });
+
+//when user types in idnum input
+            document.getElementById("idnum").addEventListener("input", function(){
+              if(document.getElementById("idnum").value !== idnum) {
+                document.getElementById("submit").disabled = false;
+              }
+              else if(document.getElementById("name").value == user.displayName && document.getElementById("idnum").value == idnum){
+                document.getElementById("submit").disabled = true;
+              }
+            });
+          }
+          //if value of name or idnum is changed enable submit button
+
+
+
+
+
+
+
+          // document.getElementById("name").addEventListener("change", {
+          //   handleEvent: function() {
+          //     console.log("name changed");
+          //     document.getElementById("submit").disabled = false;
+          //   }
+          // });
+          //
+          // document.getElementById("idnum").addEventListener("change", {
+          //   handleEvent: function() {
+          //     console.log("idnum changed");
+          //     document.getElementById("submit").disabled = false;
+          //   }
+          // });
+
+
+          //print uid
+            console.log(user.uid);
+            let idNum = "";
+
+          //get custom claim idnumber
+            user.getIdTokenResult().then((idTokenResult) => {
+                // Confirm the user is an Admin.
+                if (idTokenResult.claims.idnumber && user.displayName) {
+                  //console log user has id
+                    console.log("user has id");
+                    idNum = idTokenResult.claims.idnumber;
+                    addInputListenter(idNum);
+                console.log(idTokenResult.claims.idnumber);
+                document.getElementById("user").innerHTML = "Welcome "+ user.displayName +" | "+ idTokenResult.claims.idnumber;
+                //set value of input to idnumber
+                document.getElementById("idnum").value = idTokenResult.claims.idnumber;
+                document.getElementById("name").value = user.displayName;
+
+
+                }
+                else{
+                  document.getElementById("user").innerHTML = "Please update your details below.";
+                  if(user.displayName){
+                    document.getElementById("name").value = user.displayName;
+                  }
+                  if(idTokenResult.claims.idnumber){
+                    document.getElementById("idnum").value = idTokenResult.claims.idnumber;
+                    idNum = idTokenResult.claims.idnumber;
+                  }
+                    addInputListenter(idNum);
+
+
+                }
+            });
+
+
+
+          // document.getElementById("user").innerHTML = "Welcome " + user.displayName;
+          //add event listener to submit button
+            document.getElementById("submit").addEventListener("click", {
+                handleEvent: function() {
+                  //confirm user wants to update details
+                    event.preventDefault();
+
+                    //get user input
+                    var name = document.getElementById("name").value;
+                    var idnum = document.getElementById("idnum").value;
+                  if(name.length < 2 || idnum.length < 8){
+                    return;
+                  }
+
+
+
+
+
+                    //update user profile
+                    user.updateProfile({
+                        displayName: name,
+
+                    }).then(function() {
+                        //update successful
+                        document.getElementById("message").innerHTML = "Name Update Successful";
+                    }).catch(function(error) {
+                        //update failed
+                        document.getElementById("message").innerHTML = "Update Failed";
+                    });
+                    //call https function setIdNumber
+                    firebase.functions().httpsCallable('setIdNumber')({
+                        idnumber: idnum
+                    }).then(function(result) {
+                      console.log(result);
+                      //call successful
+                      document.getElementById("message").innerHTML = "ID Update Successful";
+                        //alert for changes to take effect you must logout and login again
+
+                        if (window.confirm("For changes to take effect you must logout and login again")) {
+                          //set email relogin local varable
+                            localStorage.setItem("email", user.email);
+
+                            firebase.auth().signOut().then(function() {
+                                // Sign-out successful.
+                                window.location.href = "login.html?email="+email;
+                            }).catch(function(error) {
+                                // An error happened.
+                                document.getElementById("message").innerHTML = "Logout Failed";
+                            });
+                        }
+
+
+                    }).catch(function(error) {
+                        //call failed
+                      console.log(error);
+                        document.getElementById("message").innerHTML = "ID Update Failed";
+
+                    });
+
+
+                }
+            });
+
+
+
+
+
+
+
+
+        } else {
+        // No user is signed in.
+          window.location.href = "login.html?redirect=account";
+        }
+    });
+
+
+
+
+
+
+
+</script>
+
+<script src="modify.js"></script>
+
+
+</html>

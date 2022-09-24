@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scanner</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .color{
+            color: #000000;
+        }
+        .icon-menu{
+            color: black;
+        }
+    </style>
+
+    <style>
+        h1{
+            text-align: center;
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="display: none">
+
+<div class="site-mobile-menu" id="mobile">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body" id="mobile-nav">
+
+    </div>
+</div>
+
+<header class="site-navbar" id="navbar" role="banner">
+
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-11 col-xl-2">
+                <h1 class="mb-0 site-logo"><a href="index.html" class="mb-0 color" style="color: black !important;">Brand</a></h1>
+            </div>
+            <div class="col-12 col-md-10 d-none d-xl-block">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+
+                    <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+                        <li class="active"><a href="index.html"><span class="color">Home</span></a></li>
+                        <li><a href="about.html"><span class="color">About</span></a></li>
+                        <!--                <li><a href="store.html"><span>Store</span></a></li>-->
+                        <!--                <li><a href="tickets.html"><span>Tickets</span></a></li>-->
+                        <!--                <li><a href="scanner.html"><span>Scanner</span></a></li>-->
+                        <li id="login">
+                            <a href="login.html"><span class="color">Login</span></a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </div>
+
+
+            <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3 color" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+
+    </div>
+    </div>
+
+</header>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/main.js"></script>
+
+
+<div id="main" >
+    <h1>Ticket Scanner</h1>
+
+    <div id="reader" style="width: 600px"></div>
+
+    <button id="pauseButton" >Pause</button>
+    <button id="resumeButton" >Resume</button>
+
+<!--    <h2>Scan History</h2>-->
+<!--    <div id="scans"></div>-->
+</div>
+
+
+<div id="overlay" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-color: rgba(0,0,0,0.5); display: none">
+
+    <div id="overlay-text" style="display: flex; justify-content: center; flex-direction: column;"></div>
+
+</div>
+
+
+
+
+</body>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase-auth.js"></script>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<script>
+  const config = {
+    apiKey: "AIzaSyBQbyfhDHOqNNKTVGjYuGJs3lBykdp9SKM",
+    authDomain: "stripe-bb257.firebaseapp.com",
+    projectId: "stripe-bb257",
+    storageBucket: "stripe-bb257.appspot.com",
+    messagingSenderId: "806611367820",
+    appId: "1:806611367820:web:e554f48f3a6c9c655b08a9",
+    measurementId: "G-WXK2DY6LRL"
+  };
+
+  firebase.initializeApp(config);
+
+  //center main in body
+  var main = document.getElementById("main");
+  main.style.position = "absolute";
+  main.style.top = "8%";
+  main.style.left = "50%";
+  main.style.transform = "translate(-50%, -5%)";
+
+  //if device in mobile make modile width 100%
+  if (window.innerWidth < 600) {
+      main.style.width = "100%";
+      //make reader width 100%
+      var reader = document.getElementById("reader");
+      reader.style.width = "100%";
+  }
+
+  //print 7:39
+  // console.log("7:41");
+
+    var isAdmin = false;
+    var ticketControl = false;
+  //if current user is not logged in and has custom claim of ticketcontrol or admin, redirect to login page
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+
+                    user.getIdTokenResult().then(idTokenResult => {
+                        isAdmin = idTokenResult.claims.admin;
+                        console.log("Admin: " + isAdmin);
+
+                        user.getIdTokenResult().then(idTokenResult => {
+                            ticketControl = idTokenResult.claims.ticketcontrol;
+                            console.log("Ticket Control: " + ticketControl);
+
+                            if (!isAdmin && !ticketControl) {
+                                console.log("user does not have admin or ticket control privilege");
+                                window.location.href = "index.html";
+                            }
+                            else{
+                                console.log("user has admin or ticket control privilege");
+                                //make body visible
+                                document.body.style.display = "block";
+                            }
+                            // console.log("user has ticket control privilege");
+                        });
+
+                        // console.log("user has admin privilege");
+                    });
+
+
+
+
+
+
+
+
+
+
+
+  //center div reader
+  //   var reader = document.getElementById("reader");
+  //   reader.style.position = "absolute";
+  //   reader.style.left = (window.innerWidth - reader.offsetWidth) / 2 + "px";
+  //   reader.style.top = (window.innerHeight - reader.offsetHeight) / 12 + "px";
+
+    //center all elements in body
+    // var body = document.getElementsByTagName("body")[0];
+    // body.style.position = "absolute";
+    // body.style.left = (window.innerWidth - body.offsetWidth) / 2 + "px";
+    // body.style.top = (window.innerHeight - body.offsetHeight) / 20 + "px";
+
+
+
+  //if pause button is clicked, pause the video from scanning
+    document.getElementById("pauseButton").addEventListener("click", function(){
+        html5QrcodeScanner.pause();
+      //pause video
+
+
+    });
+
+    //if resume button is clicked, resume the video from scanning
+    document.getElementById("resumeButton").addEventListener("click", function() {
+      html5QrcodeScanner.resume();
+      //resume video
+    });
+
+  // navigator.mediaDevices.getUserMedia({video: true, audio: false})
+  //         .then(function(stream) {
+  //           document.getElementById('preview').srcObject = stream;
+  //           document.getElementById('preview').play();
+  //           // document.getElementById('videotoggle').innerHTML = "Stop";
+  //           // qrScanner.start();
+  //         });
+
+
+let testSet ={
+    name: "test name",
+    email: "test email@gmail.com",
+    id: "test 0239304803948",
+
+}
+
+
+//search the tickets collection fieldmscannedby for the current user's uid
+//if found call history function
+    //add a listener to the tickets collection
+    // firebase.firestore()
+    //     .collection("tickets")
+    //     .where("ticketHistory", "array-contains", {scannedby: firebase.auth().currentUser.uid})
+    //     .onSnapshot(function(querySnapshot) {
+    //         console.log("tickets collection listener called");
+    //         //print length of query snapshot
+    //         console.log(querySnapshot.size);
+    //     //clear the scans div
+    //     document.getElementById("scans").innerHTML = "";
+    //     //for each document in the query snapshot
+    //         let count = 0;
+    //     querySnapshot.forEach(function(doc) {
+    //         console.log(doc.id, " => ", doc.data());
+    //
+    //         //if doc.data().ticketHistory array has a field with the current user's uid
+    //         // if (doc.data().ticketHistory.some(e => e.scannedby === user.uid)) {
+    //         //     //call history function
+    //         //     // console.log("history function called");
+    //         //     history(doc.data());
+    //         //
+    //         //     count++;
+    //         // }
+    //
+    //         // history(doc.data());
+    //     });
+    //     // console.log("count: " + count);
+    // });
+
+function history(data) {
+    // console.log("history function called");
+                let time = "";
+                let status = data.ticketHistory[data.ticketHistory.length - 1].status;
+                //add scan data to scans div color coded based on status
+                //if status is 1, green
+                let html = "";
+
+                if (status == 1) {
+
+                    html = `<div class="scan" style="background-color: rgba(0,255,0,0.65);"><h6>Name: ${data.name}</h6><h6>Email: ${data.email}</h6><h6>ID: ${data.id}</h6></div>`;
+                    //prepend html1 to scans div
+                    document.getElementById("scans").innerHTML = html + document.getElementById("scans").innerHTML;
+
+                }
+                //if status is 0, yellow
+                else if (status == 0) {
+                    html = `<div class="scan" style="background-color: rgba(255,223,104,0.81);"><h6>(${time})</h6><h6>Name: ${data.name}</h6><h6>Email: ${data.email}<h6><h6>ID: ${data.id}</h6><h6>Last Scanned: ${data.ticketHistory[data.ticketHistory.length - 1].time.toDate()}</h6></div>`;
+                    document.getElementById("scans").innerHTML = html + document.getElementById("scans").innerHTML;
+                }
+                //if status is 2, red
+                else if (status == 2) {
+
+                    html = `<div class="scan" style="background-color: rgba(255,0,0,0.65);"><h2>Invalid Ticket</h2><h2>(${time})</h2></div>`;
+                    document.getElementById("scans").innerHTML = html + document.getElementById("scans").innerHTML;
+                }
+            }
+
+function overlay(data, status) {
+  //add close button in bottom center of overlay
+    //if user taps on overlay, close overlay
+    //hide div main
+    document.getElementById("main").style.display = "none";
+    document.getElementById("overlay").addEventListener("click", function() {
+
+
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("main").style.display = "block";
+        //unpause video
+        html5QrcodeScanner.resume();
+    });
+
+    //if data.email is different than email set guest = true
+    var guest = false;
+
+
+  //if status is 1, show overlay green with ticket valid
+    if (status == 1) {
+        if (data.email != data.buyerEmail) {
+            guest = true;
+        }
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("overlay").style.backgroundColor = "rgba(0,255,0,0.65)";
+        document.getElementById("overlay-text").innerHTML = `<br><h1>Ticket Valid</h1>`;
+        if(guest == true) {
+            document.getElementById("overlay-text").innerHTML += `<h1>(Guest Ticket)</h1>`;
+        }
+        //show data.name, data.email, data.id in overlay
+        document.getElementById("overlay-text").innerHTML += `<h2>Name: ${data.name}</h2>`;
+        document.getElementById("overlay-text").innerHTML += `<h2>Email: ${data.email}</h2>`;
+        document.getElementById("overlay-text").innerHTML += `<h2>ID: ${data.id}</h2>`;
+
+
+
+        //center overlay-text in overlay
+        document.getElementById("overlay-text").style.position = "absolute";
+        document.getElementById("overlay-text").style.left = (window.innerWidth - document.getElementById("overlay-text").offsetWidth) / 2 + "px";
+        //move overlay-text down 15%
+        document.getElementById("overlay-text").style.top = (window.innerHeight - document.getElementById("overlay-text").offsetHeight)*15 / 100 + "px";
+
+
+
+
+    }
+    //if status is 0, show overlay red with ticket invalid
+    else if (status == 0) {
+        if (data.email != data.buyerEmail) {
+            guest = true;
+        }
+        document.getElementById("overlay").style.display = "block";
+        //set text color to black
+        document.getElementById("overlay").style.color = "black";
+        document.getElementById("overlay").style.backgroundColor = "rgba(255,223,104,0.81)";
+        document.getElementById("overlay-text").innerHTML = `<br><h1>Ticket Already Used</h1>`;
+        if(guest == true) {
+            document.getElementById("overlay-text").innerHTML += `<h1>(Guest Ticket)</h1>`;
+        }
+        //show data.name, data.email, data.id, data.ticketHistory in overlay
+        document.getElementById("overlay-text").innerHTML += `<h2>Name: ${data.name}</h2>`;
+        document.getElementById("overlay-text").innerHTML += `<h2>Email: ${data.email}</h2>`;
+        document.getElementById("overlay-text").innerHTML += `<h2>ID: ${data.id}</h2>`;
+        let time = data.ticketHistory[data.ticketHistory.length - 1].time.toDate();
+        //trim time to only show data before GMT
+        time = time.toString().substring(0, time.toString().indexOf("GMT"));
+
+        document.getElementById("overlay-text").innerHTML += `<h2>Last Scanned: ${time}</h2>`;
+
+        document.getElementById("overlay-text").style.position = "absolute";
+        document.getElementById("overlay-text").style.left = (window.innerWidth - document.getElementById("overlay-text").offsetWidth) / 2 + "px";
+        //move overlay-text down 15%
+        document.getElementById("overlay-text").style.top = (window.innerHeight - document.getElementById("overlay-text").offsetHeight)*15 / 100 + "px";
+
+
+
+    }
+//if status is 2, show overlay red with ticket invalid
+    else if (status == 2) {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("overlay").style.backgroundColor = "rgba(255,0,0,0.65)";
+        document.getElementById("overlay-text").innerHTML = "<br><h1>Ticket Invalid</h1>";
+        document.getElementById("overlay-text").style.position = "absolute";
+        document.getElementById("overlay-text").style.left = (window.innerWidth - document.getElementById("overlay-text").offsetWidth) / 2 + "px";
+        //move overlay-text down 15%
+        document.getElementById("overlay-text").style.top = (window.innerHeight - document.getElementById("overlay-text").offsetHeight)*15 / 100 + "px";
+
+    }
+
+
+}
+
+
+    function onScanSuccess(decodedText, decodedResult) {
+      html5QrcodeScanner.pause();
+      // handle the scanned code as you like, for example:
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      let scanTime = new Date();
+
+      //if text has // then error
+        if (decodedText.includes("//")  || decodedText.includes("http") || decodedText.includes("https")) {
+            console.log("error");
+            overlay(null, 2);
+            history(null, 2);
+        }
+        else {
+
+            //search for the ticket in the database collection tickets
+            firebase.firestore().collection("tickets").doc(decodedText).get().then(function (doc) {
+
+
+                if (doc.exists && doc.data().ticketHistory) {
+                    //print ticket already used
+                    console.log("Ticket already used");
+                    //get the last time the ticket was scanned
+                    var lastScan = doc.data().ticketHistory[doc.data().ticketHistory.length - 1].time.toDate();
+                    firebase.firestore().collection("tickets").doc(decodedText).update({
+                        ticketHistory: firebase.firestore.FieldValue.arrayUnion({
+                            time: firebase.firestore.Timestamp.now(),
+                            scannedby: firebase.auth().currentUser.uid,
+                            scannedbyName: firebase.auth().currentUser.displayName,
+                            status: 0,
+                        })
+                    }).then(function () {
+                        console.log("Document successfully updated!");
+                    }).catch(function (error) {
+                        // The document probably doesn't exist.
+                        console.error("Error updating document: ", error);
+                    });
+                    overlay(doc.data(), 0);
+                    // history(doc.data(), 0, scanTime);
+
+
+                    // alert("Ticket already scanned at: " + lastScan+ " Name: " + doc.data().name + " Email: " + doc.data().email + " ID: " + doc.data().id);
+                    //  html5QrcodeScanner.resume();
+                } else if (doc.exists) {
+                    //print ticket valid
+                    console.log("Ticket valid");
+                    firebase.firestore().collection("tickets").doc(decodedText).update({
+                        ticketHistory: firebase.firestore.FieldValue.arrayUnion({
+                            time: firebase.firestore.Timestamp.now(),
+                            scannedby: firebase.auth().currentUser.uid,
+                            scannedbyName: firebase.auth().currentUser.displayName,
+                            status: 1,
+                        })
+                    }).then(function () {
+                        console.log("Document successfully updated!");
+                    }).catch(function (error) {
+                        // The document probably doesn't exist.
+                        console.error("Error updating document: ", error);
+                    });
+
+                    overlay(doc.data(), 1);
+                    // history(doc.data(), 1, scanTime);
+
+                    // alert("Ticket: Name: " + doc.data().name + " Email: " + doc.data().email + " ID: " + doc.data().id);
+                    // html5QrcodeScanner.resume();
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    overlay("NO DOC", 2, scanTime);
+                    //   alert("Ticket not found");
+                    // html5QrcodeScanner.resume();
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+
+
+            });
+
+        }
+
+
+
+
+
+
+
+    }
+
+    function onScanFailure(error) {
+      // handle scan failure, usually better to ignore and keep scanning.
+      // for example:
+      // console.warn(`Code scan error = ${error}`);
+
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader",
+            { fps: 10, qrbox: {width: 250, height: 250} },
+            /* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+        } else {
+            // No user is signed in.
+            window.location.href = "login.html?redirect=scanner";
+        }
+    });
+
+
+</script>
+<script src="modify.js"></script>
+</html>

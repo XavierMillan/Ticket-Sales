@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        ((o,w,n,i,d)=>{o[i]=o[i]||((...a)=>{return(o[i].q=o[i].q||[]).push(a),Promise.resolve({error:null,data:null})});
+            d=w.createElement('script');d.src=n;d.async=1;w.head.appendChild(d);
+        })(window,document,'https://cdn.ownid.com/js/firebase.sdk.js','ownid');
+    </script>
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+<br>
+<form name="myForm" onsubmit="return onSubmit(this)">
+    <input id="email" type="text" name="email">
+    <input id="password" type="text" name="password">
+<!--    <input type="submit" value="Submit">-->
+</form>
+
+</body>
+
+
+<!--<script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>-->
+<!--<script src="https://www.gstatic.com/firebasejs/8.0/firebase-auth.js"></script>-->
+<!--<script src="https://www.gstatic.com/firebasejs/8.0/firebase-app.js"></script>-->
+<script src="https://www.gstatic.com/firebasejs/9.9.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.4/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.4/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.4/firebase-compat.js"></script>
+
+<script type="module">
+
+    // import {OwnID} from 'https://cdn.ownid.com/js/ownid.sdk.js';
+// import firebase from 'firebase/app';
+
+
+
+    import {
+        signInWithCustomToken,
+        getIdToken,
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut
+    } from "firebase/compat/auth";
+    import {initializeApp} from "firebase/compat/app";
+    (function (w, d, s, u, o, e, p) {
+        w[o] = w[o] || function () {
+            return (w[o].q = w[o].q || []).push(arguments), Promise.resolve({error: null, data: null})
+        },
+            e = d.createElement(s), p = d.getElementsByTagName(s)[0];
+        e.src = u;
+        e.async = 1;
+        p.parentNode.insertBefore(e, p)
+    })(window, document, 'script', 'https://cdn.ownid.com/js/firebase.sdk.js', 'ownid');
+    const firebaseConfig = {
+        apiKey: "AIzaSyBQbyfhDHOqNNKTVGjYuGJs3lBykdp9SKM",
+        authDomain: "stripe-bb257.firebaseapp.com",
+        projectId: "stripe-bb257",
+        storageBucket: "stripe-bb257.appspot.com",
+        messagingSenderId: "806611367820",
+        appId: "1:806611367820:web:e554f48f3a6c9c655b08a9",
+        measurementId: "G-WXK2DY6LRL"
+    };
+    initializeApp(firebaseConfig);
+    ownid('init', {
+        appId: 'njermxq4qvvvwh', // TODO: add your app id here from your OwnID console app (you can use your snippet) https://console.ownid.com/
+        firebaseAuth: {getAuth, getIdToken, signInWithCustomToken},
+    })
+
+    export function logout() {
+        signOut(getAuth())
+            .then(()=> window.location.href = '../index.html')
+            .catch(e=>alert(e));
+    }
+
+    export async function onRegisterSubmit(formData) {
+        //Call your existing firebase register function
+        createUserWithEmailAndPassword(getAuth(), formData.email.value, formData.password.value)
+            .then(async () => {
+                window.location.href = '../index.html';
+                //Enroll device with OwnID
+                await ownid('enrollDevice');
+            }).catch(e => alert(e));
+        return false;
+    }
+
+    export async function onLoginSubmit(formData) {
+        signInWithEmailAndPassword(getAuth(), formData.email.value, formData.password.value)
+            .then(() => window.location.href = 'pages/account.html')
+            .catch(e => alert(e));
+        return false;
+    }
+
+</script>
+
+<script type="module">
+
+</script>
+
+
+</html>

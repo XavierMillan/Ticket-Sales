@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Support</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+
+    <style>
+        /*body {*/
+        /*    overflow: hidden;*/
+        /*}*/
+
+        .color{
+            color: #000000;
+        }
+        h1.noBorder{
+            color: var(--nc-tx-1);
+            padding-bottom: 2px;
+            margin-bottom: 8px;
+            border-bottom: none;
+        }
+        .icon-menu{
+            color: black;
+        }
+        /*#main{*/
+        /*    width: 100%;*/
+        /*    margin-left: 10%;*/
+        /*    margin-right: 10%;*/
+        /*}*/
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+<div class="site-mobile-menu" id="mobile">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body" id="mobile-nav">
+
+    </div>
+</div>
+
+<header class="site-navbar" id="navbar" role="banner">
+
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-11 col-xl-2">
+                <h1 class="mb-0 site-logo"><a href="index.html" class="color">Brand</a></h1>
+            </div>
+            <div class="col-12 col-md-10 d-none d-xl-block">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+
+                    <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+                        <li class="active"><a href="index.html"><span class="color">Home</span></a></li>
+                        <li><a href="about.html"><span class="color">About</span></a></li>
+                        <!--                <li><a href="store.html"><span>Store</span></a></li>-->
+                        <!--                <li><a href="tickets.html"><span>Tickets</span></a></li>-->
+                        <!--                <li><a href="scanner.html"><span>Scanner</span></a></li>-->
+                        <li id="login">
+                            <a href="login.html"><span class="color">Login</span></a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </div>
+
+
+            <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+
+    </div>
+    </div>
+
+</header>
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/main.js"></script>
+
+<div id="content" style="margin-left: 10%; margin-right: 10%">
+
+<h1>Support</h1>
+    <h4 id="message"></h4>
+    <br>
+
+<div id="supportform" style="width: 80%">
+    <form>
+
+        <div id="intro">
+<!--            <h5>-->
+<!--                <br>-->
+<!--                Welcome to the customer support page. <br>-->
+<!--                Please fill out the form below and we will get back to you as soon as possible. <br>-->
+<!--                Thank you for your patience.-->
+<!--                <br>-->
+<!--                <br>-->
+<!--                <br>-->
+<!--            </h5>-->
+            <div>
+                Customer Info:
+                <br>
+                Name: <span id="name"></span>
+                <br>
+                Email: <span id="email"></span>
+                <br>
+                ID: <span id="idnum"></span>
+                <br>
+                <br>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <label for="category">Select issue category</label>
+            <select class="form-control" id="category">
+                <option value="" selected disabled hidden>Select Category</option>
+                <option>Refunds</option>
+                <option>Ticketing</option>
+                <option>Account</option>
+                <option>Other</option>
+            </select>
+            <br>
+            <label for="issue">
+                Please describe your issue and/or the help you require as well as your preferred outcome!
+                <br>
+                We will do our best to help you.
+            </label>
+            <textarea class="form-control" id="issue" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+</div>
+
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0/firebase-auth.js"></script>
+
+<!-- Stripe's JS library -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- bootstrap JS  -->
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const config = {
+        apiKey: "AIzaSyBQbyfhDHOqNNKTVGjYuGJs3lBykdp9SKM",
+        authDomain: "stripe-bb257.firebaseapp.com",
+        projectId: "stripe-bb257",
+        storageBucket: "stripe-bb257.appspot.com",
+        messagingSenderId: "806611367820",
+        appId: "1:806611367820:web:e554f48f3a6c9c655b08a9",
+        measurementId: "G-WXK2DY6LRL"
+    };
+
+    firebase.initializeApp(config);
+
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            //set name emal and id
+            document.getElementById("name").innerHTML = user.displayName;
+            document.getElementById("email").innerHTML = user.email;
+            //get idnumber from custom claims
+            user.getIdTokenResult().then((idTokenResult) => {
+                document.getElementById("idnum").innerHTML = idTokenResult.claims.idnumber;
+            });
+
+
+            //add event listener to submit button
+            document.getElementById("supportform").addEventListener("submit", (e) => {
+                e.preventDefault();
+                //is category selected
+                if(!document.getElementById("category").value){
+                    document.getElementById("message").innerHTML = "Please select a category";
+                    //make message dissapear after 5 seconds
+                    setTimeout(function(){
+                        document.getElementById("message").innerHTML = "";
+                    }, 5000);
+                    return;
+                }
+                //is issue in not empty
+                if(!document.getElementById("issue").value){
+                    document.getElementById("message").innerHTML = "Please enter an issue";
+                    //make message dissapear after 5 seconds
+                    setTimeout(function(){
+                        document.getElementById("message").innerHTML = "";
+                    }, 5000);
+                    return;
+                }
+
+
+
+
+                const formInfo = {
+                    category: document.getElementById("category").value,
+                    issue: document.getElementById("issue").value,
+                };
+                //object with the id of each ticket
+                const ticketIds = [];
+
+
+
+                //get all tickets with buyeremail matching user email
+                firebase.firestore().collection("tickets").where("buyerEmail", "==", user.email).get().then((querySnapshot) => {
+                    //if there are no tickets with buyeremail matching user email
+                    if (!querySnapshot.empty) {
+                       //for every doc in query snapshot add the id to the ticketIds array
+                        querySnapshot.forEach((doc) => {
+                            ticketIds.push(doc.id);
+                            console.log(doc.id);
+                        });
+
+                    } else {
+                        //set ticketIds to this user has not purchased any tickets
+                        ticketIds.push("This user has not purchased any tickets");
+                    }
+                }).then(() => {
+                    //add ticketIds to formInfo
+                    formInfo.ticketIds = ticketIds;
+                    //add user email to formInfo
+                    formInfo.userEmail = user.email;
+                    //add user id to formInfo
+                    formInfo.userId = user.uid;
+                    //add user name to formInfo
+                    formInfo.userName = user.displayName;
+                    //add user idnumber to formInfo
+                    user.getIdTokenResult().then((idTokenResult) => {
+                        formInfo.userIdNumber = idTokenResult.claims.idnumber;
+                    }).then(() => {
+                        //add formInfo to firestore
+                        firebase.firestore().collection("support").add(formInfo).then(() => {
+                            //clear form
+                            document.getElementById("category").value = "";
+                            document.getElementById("issue").value = "";
+                            //hide form
+                            document.getElementById("supportform").style.display = "none";
+
+                            //display success message
+                            document.getElementById("message").innerHTML = "Your issue has been submitted. We will get back to you as soon as possible. Thank you for your patience.";
+                            //make message dissapear after 5 seconds
+                            setTimeout(function(){
+                                document.getElementById("message").innerHTML = "";
+                                //show form
+                                document.getElementById("supportform").style.display = "block";
+                            }, 5000);
+                        });
+                    });
+                });
+
+
+
+
+
+
+                //create a new document in firestore support collection
+                // firebase.firestore().collection("support").add({
+                //     name: name,
+                //     email: email,
+                //     id: idnum,
+                //     issue: issue
+                // }).then(() => {
+                //     //clear form
+                //     document.getElementById("supportform").reset();
+                //     //show success message
+                //     document.getElementById("message").innerHTML = "Your message has been sent. We will get back to you as soon as possible. Thank you for your patience.";
+                // }).catch((error) => {
+                //     //show error message
+                //     document.getElementById("message").innerHTML = "There was an error sending your message. Please try again later.";
+                // });
+
+            });
+
+
+            //get elements
+            const name = document.getElementById("name");
+            const email = document.getElementById("email");
+            const issue = document.getElementById("issue");
+
+
+
+
+        } else {
+            window.location.href = "login.html?redirect=support";
+        }
+    });
+</script>
+
+<script src="modify.js"></script>
+
+
+
+
+
+</html>
